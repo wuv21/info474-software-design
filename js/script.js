@@ -1,5 +1,9 @@
 // script.js
 
+// Inspired by
+// http://prcweb.co.uk/lab/energy/ - example of circular visualization
+// http://bl.ocks.org/cmdoptesc/6226150 - concentric circle visualization
+
 document.addEventListener('DOMContentLoaded', function() {
     // var projectChart = function() {
     //
