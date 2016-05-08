@@ -23,17 +23,18 @@ function CCChart() {
                 .attr('width', width)
                 .attr('height', height);
 
-            svg.exit().remove();
-
             gEnter.append('g')
                 .attr('transform', 'translate(' + width/3 + ',' + height/2.5 + ')');
             var g = svg.selectAll('g');
 
             var textDisplay = gEnter.append('text')
+                .attr('class', 'textDisplay')
                 .attr('transform', 'translate(' + (width * (2/3)) + ',' + height/2.5 + ')')
                 .attr('font-size', 20)
                 .attr('fill', '#000')
                 .text('Hover over individual sector');
+
+            var textDisplayE = d3.selectAll('.textDisplay');
 
             var accessedData = data[0];
 
@@ -65,12 +66,13 @@ function CCChart() {
                 .attr('d', createArc)
                 .attr('title', function(d) {return d.year + " " + d.month + ": " + d.value})
                 .on('mouseover', function(d) {
-                    textDisplay.text(d.month + ' ' + d.year + ': ' + d.value);
+                    console.log('here');
+                    textDisplayE.text(d.month + ' ' + d.year + ': ' + d.value);
                     d3.select(this)
                         .style('fill', hoverColor);
                 })
                 .on('mouseout', function(d) {
-                    textDisplay.text('Hover over individual sector');
+                    textDisplayE.text('Hover over individual sector');
                     d3.select(this)
                         .style('fill', function(d) {return valueScale(d.value)});
                 });
@@ -83,10 +85,12 @@ function CCChart() {
                 .attr('d', createArc);
 
             var monthLabels = gEnter.append("text")
+                .attr('class', 'monthLabels')
                 .attr('transform', 'translate(' + width/3 + ',' + height/2.5 + ')');
 
+            var monthLabelsText = d3.selectAll(".monthLabels");
             months.forEach(function(month) {
-                monthLabels.append("textPath")
+                monthLabelsText.append("textPath")
                     .attr("text-anchor", "middle")
                     .attr("dy", 50)
                     .attr("startOffset", "20%")

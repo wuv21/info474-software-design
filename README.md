@@ -6,7 +6,7 @@ Circular Calendar Charts are good for representing monthly data across multiple 
 ![Example of CCChart](img/example.png)
 
 ## General usage
-This chart requires a data-join with an array of objects. Below is an example of the object:
+This chart requires a data-join with an array of objects. For best results, every month in your chosen time interval ( Below is an example of the object:
 
 ```javascript
 {
@@ -40,7 +40,7 @@ A few notes on the object:
 
 \# *CCChart*.arcConstraints([constraints])
 > If no argument given, returns current arc constraints (default is `[width *.08, width / 3.5]`).
-> If *constraints* given, set arc radius constraints to *constraints* and returns current CCChart. *constraints* must be set as an array of two numbers in the format: `[minRadius, maxRadius]`. The two numbers must be within the current height and width and is greater than 0. The numbers represent the radial distance from the center of the circle.
+> If *constraints* given, sets arc radius constraints to *constraints* and returns current CCChart. *constraints* must be set as an array of two numbers in the format: `[minRadius, maxRadius]`. The two numbers must be within the current height and width and is greater than 0. The numbers represent the radial distance from the center of the circle.
 
 \# *CCChart*.hoverColor([color])
 > If no argument given, returns current path hover color (default is `"#EB7F00"`).
