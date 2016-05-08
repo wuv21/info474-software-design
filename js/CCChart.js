@@ -10,7 +10,7 @@ function CCChart() {
     var circle = 2 * Math.PI;
     var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     var colorScale = ["#deebf7", "#084594"];
-    var arcConstraints = [width *.08, width / 3.5];
+    var arcConstraints = [100, width / 3.5];
     var hoverColor = "#EB7F00";
     var arcStrokeWidth = 2;
 
@@ -47,13 +47,17 @@ function CCChart() {
             var yearScale = d3.scale.linear().domain([minYear, maxYear]).range(arcConstraints);
             var valueScale = d3.scale.linear().domain([minValue, maxValue]).range(colorScale);
 
+            console.log("minYear: " + minYear);
+            console.log("maxYear: " + maxYear);
+            console.log(accessedData);
+
             var createArc = d3.svg.arc()
                 .innerRadius(function(d) {return yearScale(d.year - 1)})
                 .outerRadius(function(d) {return yearScale(d.year)})
                 .startAngle(function(d) {return monthScale(d.month)})
                 .endAngle(function(d) {return monthScale(d.month) + circle / 12});
 
-            var arcs = g.selectAll('path').data(accessedData);
+            var arcs = g.selectAll('.data-arcs').data(accessedData);
 
             arcs.enter().append('path')
                 .attr('class', 'data-arcs')
@@ -65,7 +69,6 @@ function CCChart() {
                 .attr('d', createArc)
                 .attr('title', function(d) {return d.year + " " + d.month + ": " + d.value})
                 .on('mouseover', function(d) {
-                    console.log('here');
                     textDisplayE.text(d.month + ' ' + d.year + ': ' + d.value);
                     d3.select(this)
                         .style('fill', hoverColor);
@@ -83,25 +86,38 @@ function CCChart() {
                 .style('fill', function(d) {return valueScale(d.value)})
                 .attr('d', createArc);
 
-            var monthLabels = gEnter.append("text")
+            d3.select('month-arc').remove();
+            gEnter.append("text")
                 .attr('id', 'monthLabelsText')
                 .attr('transform', 'translate(' + width/3 + ',' + height/2.5 + ')');
 
-            var test = d3.select('#monthLabelsText');
-
+            var monthLabels = d3.select('#monthLabelsText');
             d3.selectAll(".monthLabel").remove();
+
             months.forEach(function(month) {
-                test.append("textPath")
+                var createMonthArc = d3.svg.arc()
+                    .innerRadius(yearScale(maxYear))
+                    .outerRadius(yearScale(maxYear) + 5)
+                    .startAngle(monthScale(month))
+                    .endAngle(monthScale(month) + circle / 12);
+
+                g.append('path')
+                    .attr('id', 'month-arc' + month)
+                    .attr('class', 'month-arc')
+                    .attr('stroke-width', arcStrokeWidth)
+                    .style('fill', '#FFF')
+                    .attr('d', createMonthArc);
+
+                monthLabels.append("textPath")
                     .attr('class', 'monthLabel')
                     .attr("text-anchor", "middle")
                     // .attr("dy", 50) todo fix positioning
                     .attr("startOffset", "25%")
                     .attr("stroke", "#ccc")
                     .attr("stroke-width", 0)
-                    .attr("xlink:href", '#arc-' + maxYear + month)
+                    .attr("xlink:href", '#month-arc' + month)
                     .text(month);
             });
-
 
 
             svg.exit().remove();

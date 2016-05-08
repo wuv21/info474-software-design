@@ -19,11 +19,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
     document.getElementById('test-btn').addEventListener('click', function() {
-        console.log('me');
+        console.log('clicked');
 
         sampleData = [];
+        var minYear = Math.floor(Math.random() * (2010 - 2007) + 2007);
+        var maxYear = Math.floor(Math.random() * (10) + minYear);
 
-        for (var i = 2000; i < Math.floor(Math.random() * (2010 - 2002) + 2002); i++) {
+        for (var i = minYear; i < maxYear; i++) {
             months.forEach(function (month) {
                 sampleData.push({
                     month: month,
