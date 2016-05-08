@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', function() {
     var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
     var sampleData = [];
-    for (var i = 2000; i < 2005; i++) {
+    for (var i = 2000; i < 2006; i++) {
         months.forEach(function(month) {
             sampleData.push({
                 month: month,

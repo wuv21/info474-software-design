@@ -1,4 +1,4 @@
-// script.js
+// CCChart.js
 
 // Inspired by
 // http://prcweb.co.uk/lab/energy/ - example of circular visualization
@@ -16,7 +16,6 @@ function CCChart() {
 
     function my(selection) {
         selection.each(function(data) {
-
             var svg = d3.select(this).selectAll('svg').data(data);
 
             var gEnter = svg.enter().append('svg')
@@ -71,7 +70,7 @@ function CCChart() {
                     d3.select(this)
                         .style('fill', hoverColor);
                 })
-                .on('mouseout', function(d) {
+                .on('mouseout', function() {
                     textDisplayE.text('Hover over individual sector');
                     d3.select(this)
                         .style('fill', function(d) {return valueScale(d.value)});
@@ -80,25 +79,30 @@ function CCChart() {
             arcs.exit().remove();
 
             arcs.transition()
-                .duration(2000)
+                .duration(1000)
                 .style('fill', function(d) {return valueScale(d.value)})
                 .attr('d', createArc);
 
             var monthLabels = gEnter.append("text")
-                .attr('class', 'monthLabels')
+                .attr('id', 'monthLabelsText')
                 .attr('transform', 'translate(' + width/3 + ',' + height/2.5 + ')');
 
-            var monthLabelsText = d3.selectAll(".monthLabels");
+            var test = d3.select('#monthLabelsText');
+
+            d3.selectAll(".monthLabel").remove();
             months.forEach(function(month) {
-                monthLabelsText.append("textPath")
+                test.append("textPath")
+                    .attr('class', 'monthLabel')
                     .attr("text-anchor", "middle")
-                    .attr("dy", 50)
-                    .attr("startOffset", "20%")
+                    // .attr("dy", 50) todo fix positioning
+                    .attr("startOffset", "25%")
                     .attr("stroke", "#ccc")
                     .attr("stroke-width", 0)
                     .attr("xlink:href", '#arc-' + maxYear + month)
                     .text(month);
             });
+
+
 
             svg.exit().remove();
         });
