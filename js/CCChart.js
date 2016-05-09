@@ -111,14 +111,12 @@ function CCChart() {
                 monthLabels.append("textPath")
                     .attr('class', 'monthLabel')
                     .attr("text-anchor", "middle")
-                    // .attr("dy", 50) todo fix positioning
                     .attr("startOffset", "25%")
                     .attr("stroke", "#ccc")
                     .attr("stroke-width", 0)
                     .attr("xlink:href", '#month-arc' + month)
                     .text(month);
             });
-
 
             svg.exit().remove();
         });

@@ -35,9 +35,11 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
         chartWrapper.datum([sampleData]).call(myChart);
+    });
 
-        //myChart.hoverColor('green');
-        //chartWrapper.call(myChart)
+    document.getElementById('test-btn-2').addEventListener('click', function() {
+        myChart.width(800);
+        chartWrapper.call(myChart)
     });
 
 
