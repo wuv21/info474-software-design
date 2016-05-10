@@ -26,15 +26,16 @@ function CCChart() {
             var g = svg.selectAll('g');
             g.attr('transform', 'translate(' + width/3 + ',' + height/2.5 + ')');
 
+            d3.selectAll('.textDisplay').remove();
 
-            var textDisplay = svg.append('text')
+            svg.append('text')
                 .attr('class', 'textDisplay')
                 .attr('transform', 'translate(' + (width * (2/3)) + ',' + height/2.5 + ')')
                 .attr('font-size', 20)
                 .attr('fill', '#000')
                 .text('Hover over individual sector');
 
-            var textDisplayE = d3.selectAll('.textDisplay');
+            var textDisplayE = d3.select('.textDisplay');
 
             var accessedData = data[0];
 
@@ -59,6 +60,7 @@ function CCChart() {
 
             var arcs = g.selectAll('.data-arcs').data(accessedData);
 
+            // todo fix textdisplay update
             arcs.enter().append('path')
                 .attr('class', 'data-arcs')
                 .attr('id', function(d) {return "arc-" + d.year + d.month})
@@ -90,10 +92,12 @@ function CCChart() {
             gEnter.append("text")
                 .attr('id', 'monthLabelsText');
 
+            d3.selectAll(".month-arc").remove();
+
             var monthLabels = d3.select('#monthLabelsText');
             d3.selectAll(".monthLabel").remove();
 
-            months.forEach(function(month) { //todo update month labels position on size change
+            months.forEach(function(month) {
                 var createMonthArc = d3.svg.arc()
                     .innerRadius(yearScale(maxYear))
                     .outerRadius(yearScale(maxYear) + 5)
