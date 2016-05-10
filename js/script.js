@@ -12,11 +12,8 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    console.log(sampleData);
     var myChart = CCChart();
     var chartWrapper = d3.select('#vis').datum([sampleData]).call(myChart);
-
-
 
     document.getElementById('test-btn').addEventListener('click', function() {
         console.log('clicked');
@@ -38,7 +35,9 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     document.getElementById('test-btn-2').addEventListener('click', function() {
-        myChart.width(800);
+        myChart.width(600)
+            .height(500)
+            .arcConstraints([50, 150]);
         chartWrapper.call(myChart)
     });
 

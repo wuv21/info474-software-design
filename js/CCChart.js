@@ -18,15 +18,16 @@ function CCChart() {
         selection.each(function(data) {
             var svg = d3.select(this).selectAll('svg').data(data);
 
-            var gEnter = svg.enter().append('svg')
-                .attr('width', width)
+            var gEnter = svg.enter().append('svg').append('g');
+
+            svg.attr('width', width)
                 .attr('height', height);
 
-            gEnter.append('g')
-                .attr('transform', 'translate(' + width/3 + ',' + height/2.5 + ')');
             var g = svg.selectAll('g');
+            g.attr('transform', 'translate(' + width/3 + ',' + height/2.5 + ')');
 
-            var textDisplay = gEnter.append('text')
+
+            var textDisplay = svg.append('text')
                 .attr('class', 'textDisplay')
                 .attr('transform', 'translate(' + (width * (2/3)) + ',' + height/2.5 + ')')
                 .attr('font-size', 20)
@@ -49,7 +50,6 @@ function CCChart() {
 
             console.log("minYear: " + minYear);
             console.log("maxYear: " + maxYear);
-            console.log(accessedData);
 
             var createArc = d3.svg.arc()
                 .innerRadius(function(d) {return yearScale(d.year - 1)})
@@ -88,13 +88,12 @@ function CCChart() {
 
             d3.select('month-arc').remove();
             gEnter.append("text")
-                .attr('id', 'monthLabelsText')
-                .attr('transform', 'translate(' + width/3 + ',' + height/2.5 + ')');
+                .attr('id', 'monthLabelsText');
 
             var monthLabels = d3.select('#monthLabelsText');
             d3.selectAll(".monthLabel").remove();
 
-            months.forEach(function(month) {
+            months.forEach(function(month) { //todo update month labels position on size change
                 var createMonthArc = d3.svg.arc()
                     .innerRadius(yearScale(maxYear))
                     .outerRadius(yearScale(maxYear) + 5)
@@ -105,7 +104,7 @@ function CCChart() {
                     .attr('id', 'month-arc' + month)
                     .attr('class', 'month-arc')
                     .attr('stroke-width', arcStrokeWidth)
-                    .style('fill', '#FFF')
+                    .style('fill', 'rgba(0, 0, 0, 0)')
                     .attr('d', createMonthArc);
 
                 monthLabels.append("textPath")

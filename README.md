@@ -28,7 +28,7 @@ A few notes on the object:
 
 \# *CCChart*.width([num])
 > If no argument given, returns current chart width (default is `960` px).
-> If *num* given, sets chart width to *num* and returns current CCChart.
+> If *num* given, sets chart width to *num* and returns current CCChart. It is suggested that you change the *arcConstraints* as well to fit the new width.
 
 \# *CCChart*.height([num])
 > If no argument given, returns current chart height (default is `800` px).
