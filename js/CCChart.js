@@ -1,10 +1,13 @@
 // CCChart.js
 
-// Inspired by
+// Inspired and helped by
 // http://prcweb.co.uk/lab/energy/ - example of circular visualization
 // http://bl.ocks.org/cmdoptesc/6226150 - concentric circle visualization
+// https://bost.ocks.org/mike/chart/time-series-chart.js - reusable chart tutorial especially with gEnter/selection
+// http://stackoverflow.com/questions/20447106/how-to-center-horizontal-and-vertical-text-along-an-textpath-inside-an-arc-usi - aligning textpath with arcs
 
 function CCChart() {
+    // default properties of CCChart
     var width = 960;
     var height = 800;
     var circle = 2 * Math.PI;
@@ -14,10 +17,10 @@ function CCChart() {
     var hoverColor = "#EB7F00";
     var arcStrokeWidth = 2;
 
+    // CCChart constructor
     function my(selection) {
         selection.each(function(data) {
             var svg = d3.select(this).selectAll('svg').data(data);
-
             var gEnter = svg.enter().append('svg').append('g');
 
             svg.attr('width', width)
@@ -46,17 +49,17 @@ function CCChart() {
             var yearScale = d3.scale.linear().domain([minYear, maxYear]).range(arcConstraints);
             var valueScale = d3.scale.linear().domain([minValue, maxValue]).range(colorScale);
 
-            console.log("minYear: " + minYear);
-            console.log("maxYear: " + maxYear);
-
+            // arc creation function
             var createArc = d3.svg.arc()
                 .innerRadius(function(d) {return yearScale(d.year - 1)})
                 .outerRadius(function(d) {return yearScale(d.year)})
                 .startAngle(function(d) {return monthScale(d.month)})
-                .endAngle(function(d) {return monthScale(d.month) + circle / 12});
+                .endAngle(function(d) {return monthScale(d.month) + circle / months.length});
 
+            // arc data-join
             var arcs = g.selectAll('.data-arcs').data(accessedData);
 
+            // arc entrance and attribute/style declarations
             arcs.enter().append('path')
                 .attr('class', 'data-arcs')
                 .attr('id', function(d) {return "arc-" + d.year + d.month})
@@ -67,6 +70,7 @@ function CCChart() {
                 .attr('d', createArc)
                 .attr('title', function(d) {return d.year + " " + d.month + ": " + d.value})
                 .on('mouseover', function(d) {
+                    // updates hover color and textDisplay
                     var textDisplay = d3.select('#textDisplay');
 
                     textDisplay.text(d.month + ' ' + d.year + ': ' + d.value);
@@ -74,6 +78,7 @@ function CCChart() {
                         .style('fill', hoverColor);
                 })
                 .on('mouseout', function() {
+                    // resets hover color and textDisplay
                     var textDisplay = d3.select('#textDisplay');
 
                     textDisplay.text('Hover over individual sector');
@@ -81,14 +86,16 @@ function CCChart() {
                         .style('fill', function(d) {return valueScale(d.value)});
                 });
 
+            // arc exit and deletion of data no longer present.
             arcs.exit().remove();
 
+            // arc transition effects
             arcs.transition()
                 .duration(1000)
                 .style('fill', function(d) {return valueScale(d.value)})
                 .attr('d', createArc);
 
-            d3.select('month-arc').remove();
+            // outside month labels
             gEnter.append("text")
                 .attr('id', 'monthLabelsText');
 
@@ -98,12 +105,14 @@ function CCChart() {
             d3.selectAll(".monthLabel").remove();
 
             months.forEach(function(month) {
+                // arc for outer transparent circles
                 var createMonthArc = d3.svg.arc()
                     .innerRadius(yearScale(maxYear))
                     .outerRadius(yearScale(maxYear) + 5)
                     .startAngle(monthScale(month))
                     .endAngle(monthScale(month) + circle / 12);
 
+                // draws outer transparent circles
                 g.append('path')
                     .attr('id', 'month-arc' + month)
                     .attr('class', 'month-arc')
@@ -111,6 +120,7 @@ function CCChart() {
                     .style('fill', 'rgba(0, 0, 0, 0)')
                     .attr('d', createMonthArc);
 
+                // draws actual text
                 monthLabels.append("textPath")
                     .attr('class', 'monthLabel')
                     .attr("text-anchor", "middle")
@@ -121,10 +131,12 @@ function CCChart() {
                     .text(month);
             });
 
+            // remove svg elements not bound to data anymore
             svg.exit().remove();
         });
     }
 
+    // accessor function for width property
     my.width = function(val) {
         if (!arguments.length) return width;
 
@@ -132,6 +144,7 @@ function CCChart() {
         return my;
     };
 
+    // accessor function for height property
     my.height = function(val) {
         if (!arguments.length) return height;
 
@@ -139,6 +152,7 @@ function CCChart() {
         return my;
     };
 
+    // accessor function for color scale property
     my.colorScale = function(val) {
         if (!arguments.length) return colorScale;
 
@@ -146,6 +160,7 @@ function CCChart() {
         return my;
     };
 
+    // accessor function for arc constraints property
     my.arcConstraints = function(val) {
         if (!arguments.length) return arcConstraints;
 
@@ -153,6 +168,7 @@ function CCChart() {
         return my;
     };
 
+    // accessor function for hover color property
     my.hoverColor = function(val) {
         if (!arguments.length) return hoverColor;
 
@@ -160,10 +176,19 @@ function CCChart() {
         return my;
     };
 
+    // accessor function for arc stroke width property
     my.arcStrokeWidth = function(val) {
         if (!arguments.length) return arcStrokeWidth;
 
         arcStrokeWidth = val;
+        return my;
+    };
+
+    // accessor function for array of months property
+    my.months = function(val) {
+        if (!arguments.length) return months;
+
+        months = val;
         return my;
     };
 
