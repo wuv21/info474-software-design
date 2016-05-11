@@ -46,7 +46,7 @@ function CCChart() {
             var maxValue = d3.max(accessedData, function(d) {return d.value});
 
             var monthScale = d3.scale.ordinal().domain(months).rangeBands([0, circle]);
-            var yearScale = d3.scale.linear().domain([minYear, maxYear]).range(arcConstraints);
+            var yearScale = d3.scale.linear().domain([minYear - 1, maxYear]).range(arcConstraints);
             var valueScale = d3.scale.linear().domain([minValue, maxValue]).range(colorScale);
 
             // arc creation function
