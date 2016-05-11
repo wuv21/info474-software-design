@@ -6,19 +6,26 @@ Circular Calendar Charts are good for representing monthly data across multiple 
 ![Example of CCChart](img/example.png)
 
 ## General usage
-This chart requires a data-join with an array of objects. For best results, every month in your chosen time interval ( Below is an example of the object:
+This chart requires a data-join with an array of objects. For best results, utilize every month in your chosen time interval. Below is an example of this array of objects.
 
 ```javascript
-{
-    month: "January",
-    year: 2005,
-    value: 100
-}
+[
+    {
+        month: "January",
+        year: 2005,
+        value: 100
+    },
+    {
+        month: "February",
+        year: 2005,
+        value: 54.5
+    }
+]
 ```
 
 A few notes on the object:
 - `month` must be a string with first letter capitalized
-- `year` must be a number
+- `year` must be a valid year integer
 - `value` must be a number
 
 ## Chart functions

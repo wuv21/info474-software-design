@@ -26,16 +26,13 @@ function CCChart() {
             var g = svg.selectAll('g');
             g.attr('transform', 'translate(' + width/3 + ',' + height/2.5 + ')');
 
-            d3.selectAll('.textDisplay').remove();
-
+            d3.select('#textDisplay').remove();
             svg.append('text')
-                .attr('class', 'textDisplay')
+                .attr('id', 'textDisplay')
                 .attr('transform', 'translate(' + (width * (2/3)) + ',' + height/2.5 + ')')
                 .attr('font-size', 20)
                 .attr('fill', '#000')
                 .text('Hover over individual sector');
-
-            var textDisplayE = d3.select('.textDisplay');
 
             var accessedData = data[0];
 
@@ -60,7 +57,6 @@ function CCChart() {
 
             var arcs = g.selectAll('.data-arcs').data(accessedData);
 
-            // todo fix textdisplay update
             arcs.enter().append('path')
                 .attr('class', 'data-arcs')
                 .attr('id', function(d) {return "arc-" + d.year + d.month})
@@ -71,12 +67,16 @@ function CCChart() {
                 .attr('d', createArc)
                 .attr('title', function(d) {return d.year + " " + d.month + ": " + d.value})
                 .on('mouseover', function(d) {
-                    textDisplayE.text(d.month + ' ' + d.year + ': ' + d.value);
+                    var textDisplay = d3.select('#textDisplay');
+
+                    textDisplay.text(d.month + ' ' + d.year + ': ' + d.value);
                     d3.select(this)
                         .style('fill', hoverColor);
                 })
                 .on('mouseout', function() {
-                    textDisplayE.text('Hover over individual sector');
+                    var textDisplay = d3.select('#textDisplay');
+
+                    textDisplay.text('Hover over individual sector');
                     d3.select(this)
                         .style('fill', function(d) {return valueScale(d.value)});
                 });
