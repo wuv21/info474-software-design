@@ -3,7 +3,7 @@
 ## CCChart (Circular Calendar Chart)
 Circular Calendar Charts are good for representing monthly data across multiple years. An example is shown below representing random values for each month from 2000 to 2005.
 
-![Example of CCChart](img/example.png)
+![Example of CCChart](img/completeExample.png)
 
 ## General usage
 This chart requires a data-join with an array of objects. For best results, utilize every month in your chosen time interval. Below is an example of this array of objects.
